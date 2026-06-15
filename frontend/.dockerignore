@@ -1,0 +1,24 @@
+# Dependencies (installed inside the image)
+node_modules/
+
+# Build output
+dist/
+
+# Vite cache
+.vite/
+
+# IDE / editor files
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*

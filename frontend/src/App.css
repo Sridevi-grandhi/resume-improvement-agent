@@ -1,0 +1,970 @@
+/* ==========================================================
+   Resume Improvement Agent - Stylesheet
+
+   Color coding used throughout:
+     Green  (#16a34a) = Great Match / Matched
+     Blue   (#2563eb) = Good Match
+     Yellow (#ca8a04) = Moderate Match
+     Orange (#d97706) = Weak Match / Skill Gap
+     Red    (#dc2626) = Poor Match / Missing / Warning
+     Primary (#4a6cf7) = Actions (buttons, focus)
+   ========================================================== */
+
+/* ========== Global Reset & Base Styles ========== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #1a1a2e;
+  line-height: 1.6;
+}
+
+/* ========== App Container ========== */
+
+.app-container {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  box-sizing: border-box;
+}
+
+/* ========== Header ========== */
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.app-header p {
+  font-size: 1.05rem;
+  color: #555;
+}
+
+/* ========== Input Section (two side-by-side cards) ========== */
+
+.input-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.verified-skills-section {
+  margin-bottom: 24px;
+}
+
+.verified-skills-card textarea {
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.verified-skills-card textarea:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.input-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.input-card label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: #1a1a2e;
+}
+
+.input-card textarea {
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  background: #fafafa;
+}
+
+.input-card textarea:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  background: #fff;
+}
+
+/* ========== Button Section (Analyze + Clear + History) ========== */
+
+.button-section {
+  text-align: center;
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.analyze-btn {
+  background: #4a6cf7;
+  color: #fff;
+  border: none;
+  padding: 14px 48px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.analyze-btn:hover {
+  background: #3b5de7;
+  transform: translateY(-1px);
+}
+
+.analyze-btn:active {
+  transform: translateY(0);
+}
+
+.analyze-btn:disabled {
+  background: #a0b4fc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.clear-btn {
+  background: #fff;
+  color: #555;
+  border: 2px solid #d0d0d0;
+  padding: 14px 36px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.clear-btn:hover {
+  background: #f5f5f5;
+  border-color: #999;
+  transform: translateY(-1px);
+}
+
+.clear-btn:active {
+  transform: translateY(0);
+}
+
+.history-btn {
+  background: #fff;
+  color: #16a34a;
+  border: 2px solid #bbf7d0;
+  padding: 14px 36px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.history-btn:hover {
+  background: #f0fdf4;
+  border-color: #16a34a;
+  transform: translateY(-1px);
+}
+
+.history-btn:active {
+  transform: translateY(0);
+}
+
+.history-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ========== Loading Spinner ========== */
+
+.loading-message {
+  text-align: center;
+  margin: 24px 0;
+  color: #4a6cf7;
+  font-size: 1rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #4a6cf7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== Error Message (red box) ========== */
+
+.error-message {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 14px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}
+
+/* ========== Results Section ========== */
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.result-card,
+.history-card,
+.analysis-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.result-card h2 {
+  font-size: 1.15rem;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+/* ========== ATS Score Card ========== */
+
+.dual-score-section {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.score-card {
+  text-align: center;
+}
+
+.score-card-primary {
+  border: 2px solid #4a6cf7;
+}
+
+.score-card-secondary {
+  opacity: 0.95;
+}
+
+.score-circle-small {
+  width: 100px;
+  height: 100px;
+  border-width: 5px;
+}
+
+.score-circle-small .score-number {
+  font-size: 2rem;
+}
+
+.optimization-card {
+  margin-bottom: 16px;
+}
+
+.optimization-success {
+  border-left: 4px solid #16a34a;
+}
+
+.optimization-limited {
+  border-left: 4px solid #d97706;
+}
+
+.optimization-text {
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.optimization-message {
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.success-msg {
+  color: #16a34a;
+}
+
+.warning-msg {
+  color: #d97706;
+}
+
+.score-circle {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 6px solid;
+  margin: 8px 0;
+}
+
+.score-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.score-verdict {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* ========== 5-Tier Score Colors ========== */
+
+.score-great {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.score-good {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.score-moderate {
+  border-color: #ca8a04;
+  color: #ca8a04;
+}
+
+.score-weak {
+  border-color: #d97706;
+  color: #d97706;
+}
+
+.score-poor {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* ========== Score Breakdown Card ========== */
+
+.score-breakdown-card {
+  border-left: 4px solid #4a6cf7;
+}
+
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  text-align: center;
+}
+
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.breakdown-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.breakdown-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* ========== Warning Card (Role Mismatch) ========== */
+
+.warning-card {
+  border-left: 4px solid #dc2626;
+  background: #fef2f2;
+}
+
+.warning-card h2 {
+  color: #dc2626;
+}
+
+.warning-text {
+  color: #991b1b;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+/* ========== Skill Gap Analysis Card ========== */
+
+.skill-gap-card {
+  border-left: 4px solid #d97706;
+  background: #fffbeb;
+}
+
+.skill-gap-card h2 {
+  color: #92400e;
+}
+
+.skill-gap-text {
+  color: #78350f;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+}
+
+/* ========== Keywords Card (Matched + Missing) ========== */
+
+.keywords-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.keywords-group {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.keywords-group h3 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.keyword-list,
+.keywords-list,
+.matched-keywords,
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.keyword-chip,
+.keyword-tag,
+.matched-chip,
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.keyword-matched {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.keyword-missing {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* ========== Suggestions List ========== */
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+}
+
+.suggestions-list li {
+  padding: 10px 0 10px 28px;
+  position: relative;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.95rem;
+}
+
+.suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+.suggestions-list li::before {
+  content: '\1F4A1';
+  position: absolute;
+  left: 0;
+  top: 10px;
+}
+
+/* ========== Improved Summary (green box) ========== */
+
+.improved-text {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #166534;
+}
+
+/* ========== Improved Bullet Points ========== */
+
+.bullet-list {
+  list-style: none;
+  padding: 0;
+}
+
+.bullet-list li {
+  padding: 10px 0 10px 28px;
+  position: relative;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.bullet-list li:last-child {
+  border-bottom: none;
+}
+
+.bullet-list li::before {
+  content: '\2705';
+  position: absolute;
+  left: 0;
+  top: 10px;
+}
+
+/* ========== Generated Resume Section ========== */
+
+.generated-resume-card {
+  border-left: 4px solid #4a6cf7;
+}
+
+.resume-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.copy-btn {
+  background: #4a6cf7;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.copy-btn:hover {
+  background: #3b5de7;
+  transform: translateY(-1px);
+}
+
+.copy-btn:active {
+  transform: translateY(0);
+}
+
+.download-btn {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.download-btn:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.download-btn:active {
+  transform: translateY(0);
+}
+
+.use-input-btn {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.use-input-btn:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
+}
+
+.use-input-btn:active {
+  transform: translateY(0);
+}
+
+.generated-resume-instruction {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.small-btn {
+  padding: 6px 16px;
+  font-size: 0.8rem;
+}
+
+.generated-resume-text {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #1a1a2e;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.success-message {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 12px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ========== History Section ========== */
+
+.history-section {
+  margin-top: 32px;
+}
+
+.history-title {
+  font-size: 1.3rem;
+  color: #1a1a2e;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.history-empty {
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.history-card {
+  border-left: 4px solid #4a6cf7;
+  padding: 20px;
+}
+
+.card-header,
+.history-header,
+.result-header,
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.history-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.history-score {
+  font-size: 1.05rem;
+  font-weight: 700;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.history-optimization {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background: #f8f9fb;
+  border-radius: 6px;
+}
+
+.timestamp,
+.created-at,
+.history-date {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.matched-section,
+.history-keywords {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.matched-section strong,
+.history-keywords strong {
+  display: block;
+}
+
+.history-tag {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+}
+
+.history-warning {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.history-skill-gap {
+  background: #fffbeb;
+  color: #78350f;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.history-summary {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.history-suggestions {
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.history-suggestions ul {
+  margin-top: 4px;
+  padding-left: 20px;
+}
+
+.history-suggestions li {
+  margin-bottom: 2px;
+}
+
+.history-resume {
+  margin-top: 12px;
+}
+
+.history-resume-actions {
+  margin: 8px 0;
+}
+
+.history-resume-text {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #333;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+/* ========== Footer ========== */
+
+.app-footer {
+  text-align: center;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+/* ========== Responsive Design (mobile-friendly) ========== */
+
+@media (max-width: 768px) {
+  .card-header,
+  .history-header,
+  .result-header,
+  .history-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timestamp,
+  .created-at,
+  .history-date {
+    margin-left: 0;
+    white-space: normal;
+  }
+
+  .keyword-list,
+  .keywords-list,
+  .matched-keywords,
+  .chips-container {
+    width: 100%;
+  }
+
+  .keyword-chip,
+  .keyword-tag,
+  .matched-chip,
+  .skill-chip {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .input-section {
+    grid-template-columns: 1fr;
+  }
+
+  .dual-score-section {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .button-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .score-circle {
+    width: 110px;
+    height: 110px;
+  }
+
+  .score-number {
+    font-size: 2rem;
+  }
+
+  .breakdown-grid {
+    grid-template-columns: 1fr;
+  }
+}

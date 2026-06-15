@@ -1,0 +1,80 @@
+# ============================================================
+# Resume Improvement Agent — full stack orchestration
+#
+#   postgres  -> PostgreSQL 16 database   (host port 5556 -> 5432)
+#   backend   -> Spring Boot REST API     (host port 8081 -> 8080)
+#   frontend  -> React + Vite dev server  (host port 5174 -> 5173)
+#
+# Start everything:   docker compose up --build
+# ============================================================
+
+# Project name — keeps containers, network and volume namespaced/unique
+# so this stack can run alongside other Docker projects.
+name: resume-improvement-agent
+
+services:
+  # ---------------- PostgreSQL ----------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: resume-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: resume_agent_db
+    ports:
+      - "5556:5432"
+    networks:
+      - resume-net
+    volumes:
+      - resume_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d resume_agent_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------- Spring Boot backend ----------------
+  backend:
+    build: ./backend
+    container_name: resume-backend
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      # Connect to the postgres SERVICE name on the internal Docker network
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/resume_agent_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - resume-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------- React + Vite frontend ----------------
+  frontend:
+    build: ./frontend
+    container_name: resume-frontend
+    restart: unless-stopped
+    ports:
+      - "5174:5173"
+    environment:
+      # The browser runs on the host, so it reaches the backend via the
+      # backend's unique host port.
+      VITE_API_BASE_URL: http://localhost:8081
+    networks:
+      - resume-net
+    depends_on:
+      - backend
+
+networks:
+  resume-net:
+    name: resume-improvement-agent-net
+    driver: bridge
+
+volumes:
+  resume_pg_data:
+    name: resume-improvement-agent-pg-data
