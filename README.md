@@ -124,25 +124,26 @@ $env:VITE_API_BASE_URL = "http://localhost:8080"; npm run dev
 
 ## Configuration
 
-### Backend (environment variables)
+### Backend environment variables
 
-`backend/src/main/resources/application.properties` reads these with safe local
-defaults, so the same build runs both locally and in Docker:
+`backend/src/main/resources/application.properties` reads these values with safe local defaults, so the same build can run locally and in Docker.
 
-| Variable | Default (local) | Docker value |
-| -------- | --------------- | ------------ |
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5556/resume_agent_db` | `jdbc:postgresql://postgres:5432/resume_agent_db` |
-| `SPRING_DATASOURCE_USERNAME` | `postgres` | `postgres` |
-| `SPRING_DATASOURCE_PASSWORD` | `postgres` | `postgres` |
-| `SPRING_JPA_HIBERNATE_DDL_AUTO` | `update` | `update` |
+| Variable                        | Default Local Value                                | Docker Value                                      |
+| ------------------------------- | -------------------------------------------------- | ------------------------------------------------- |
+| `SPRING_DATASOURCE_URL`         | `jdbc:postgresql://localhost:5556/resume_agent_db` | `jdbc:postgresql://postgres:5432/resume_agent_db` |
+| `SPRING_DATASOURCE_USERNAME`    | `postgres`                                         | `postgres`                                        |
+| `SPRING_DATASOURCE_PASSWORD`    | `<your-local-db-password>`                         | `<docker-db-password>`                            |
+| `SPRING_JPA_HIBERNATE_DDL_AUTO` | `update`                                           | `update`                                          |
 
-### Frontend (environment variable)
+> Do not commit real database passwords, API keys, tokens, or production secrets. Use environment variables or a local `.env` file for sensitive values.
 
-| Variable | Default | Purpose |
-| -------- | ------- | ------- |
-| `VITE_API_BASE_URL` | `http://localhost:8081` | Base URL the UI uses to call the backend |
+### Frontend environment variable
 
-The fallback lives in `frontend/src/config.js`.
+| Variable            | Default                 | Purpose                                               |
+| ------------------- | ----------------------- | ----------------------------------------------------- |
+| `VITE_API_BASE_URL` | `http://localhost:8081` | Base URL used by the frontend to call the backend API |
+
+The frontend fallback configuration lives in `frontend/src/config.js`.
 
 ---
 
